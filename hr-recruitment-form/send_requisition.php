@@ -4,11 +4,11 @@ header('Content-Type: application/json');
 define('SMTP_HOST',            'smtp.gmail.com');
 define('SMTP_PORT',            587);
 define('SMTP_SECURE',          'tls');
-define('SMTP_USER',            'shams.haqyar786@gmail.com');
-define('SMTP_PASS',            'gwit wqwc wvph jirf');
-define('FROM_EMAIL',           'shams.haqyar786@gmail.com');
+define('SMTP_USER',            'example6@gmail.com');
+define('SMTP_PASS',            'xxxx xxxx xxxx xxxx');
+define('FROM_EMAIL',           'example6@gmail.com');
 define('FROM_NAME',            'Lapis Group HR System');
-define('HR_EMAIL',             'Zalmay.Akbar@Lapis-group.com');
+define('HR_EMAIL',             'example@gmail.com');
 define('HR_NAME',              'HR Department');
 define('SEND_COPY_TO_MANAGER', true);
 
