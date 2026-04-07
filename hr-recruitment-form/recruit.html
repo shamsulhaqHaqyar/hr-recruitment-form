@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recruitment Requisition Form</title>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --border: #c5d5e8;
+    --border-focus: #0077cc;
+    --text: #0a1628;
+    --muted: #4a6480;
+    --accent: #00aaff;
+    --accent-dark: #0077cc;
+    --section-bg: #0a1628;
+    --section-text: #e8f4ff;
+    --error: #c0392b;
+    --success: #1a9e5c;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 40px 20px 80px;
+  }
+
+  .page-wrapper {
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .form-header {
+    background: var(--section-bg);
+    color: var(--section-text);
+    padding: 36px 40px;
+    margin-bottom: 0;
+    position: relative;
+    overflow: hidden;
+  }
+  .form-header::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 180px; height: 180px;
+    border: 2px solid #00aaff;
+    border-radius: 50%;
+    opacity: 0.25;
+  }
+  .form-header::after {
+    content: '';
+    position: absolute;
+    bottom: -60px; right: 40px;
+    width: 120px; height: 120px;
+    border: 2px solid #0077cc;
+    border-radius: 50%;
+    opacity: 0.2;
+  }
+  .org-name {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 12px;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    color: #00aaff;
+    margin-bottom: 10px;
+    font-weight: 600;
+  }
+  .form-header h1 {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 32px;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    letter-spacing: 1px;
+  }
+  .form-header p {
+    font-size: 13px;
+    color: rgba(200,230,255,0.65);
+    font-weight: 300;
+  }
+
+  /* Form body */
+  .form-body {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-top: none;
+    padding: 40px;
+  }
+
+  /* Section */
+  .section {
+    margin-bottom: 36px;
+  }
+  .section-title {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 18px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #c5d5e8;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-weight: 600;
+  }
+  .section-title span {
+    background: linear-gradient(135deg, #0077cc, #00aaff);
+    color: #fff;
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  /* Grid */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .col-full { grid-column: 1 / -1; }
+
+  /* Field */
+  .field { display: flex; flex-direction: column; gap: 5px; }
+  .field label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    letter-spacing: 0.3px;
+  }
+  .field label .req { color: var(--accent-dark); margin-left: 2px; }
+
+  .field input,
+  .field select,
+  .field textarea {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 10px 12px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    outline: none;
+  }
+  .field input:focus,
+  .field select:focus,
+  .field textarea:focus {
+    border-color: #0077cc;
+    box-shadow: 0 0 0 3px rgba(0,119,204,0.12);
+    background: #fff;
+  }
+  .field textarea { resize: vertical; min-height: 90px; line-height: 1.5; }
+  .field textarea.tall { min-height: 130px; }
+  .field select { appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%237a776e' d='M6 8L0 0h12z'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 12px center; padding-right: 32px; }
+
+  /* Hint */
+  .field .hint {
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* Radio / Checkbox group */
+  .radio-group, .check-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 2px;
+  }
+  .radio-group label, .check-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text);
+    font-weight: 400;
+    cursor: pointer;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 7px 12px;
+    transition: border-color 0.15s, background 0.15s;
+  }
+  .radio-group label:hover, .check-group label:hover {
+    border-color: #0077cc;
+    background: #eef6ff;
+  }
+  .radio-group input[type=radio],
+  .check-group input[type=checkbox] {
+    width: auto;
+    margin: 0;
+    accent-color: var(--section-bg);
+  }
+  .radio-group input[type=radio]:checked + span,
+  .check-group input[type=checkbox]:checked + span {
+    font-weight: 500;
+  }
+
+  /* Divider */
+  .divider {
+    border: none;
+    border-top: 1px dashed var(--border);
+    margin: 30px 0;
+  }
+
+  /* Submit area */
+  .submit-area {
+    margin-top: 36px;
+    padding-top: 24px;
+    border-top: 2px solid #0077cc;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: gap;
+    gap: 16px;
+  }
+  .submit-note {
+    font-size: 12px;
+    color: var(--muted);
+    max-width: 400px;
+    line-height: 1.5;
+  }
+  .submit-note strong { color: var(--text); }
+
+  .btn-submit {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #fff;
+    background: linear-gradient(135deg, #0077cc, #00aaff);
+    border: none;
+    border-radius: 4px;
+    padding: 14px 36px;
+    cursor: pointer;
+    transition: opacity 0.2s, transform 0.1s;
+    white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(0,119,204,0.35);
+  }
+  .btn-submit:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+  }
+  .btn-submit:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  /* Flash messages */
+  .flash {
+    padding: 14px 20px;
+    border-radius: 3px;
+    font-size: 14px;
+    margin-bottom: 24px;
+    display: none;
+  }
+  .flash.success {
+    background: #eafaf1;
+    border: 1px solid var(--success);
+    color: #1d6e40;
+  }
+  .flash.error {
+    background: #fdedec;
+    border: 1px solid var(--error);
+    color: #922b21;
+  }
+  .flash.show { display: block; }
+
+  /* Loading spinner inside button */
+  .spinner {
+    display: inline-block;
+    width: 14px; height: 14px;
+    border: 2px solid rgba(245,244,240,0.4);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  @media (max-width: 600px) {
+    .form-header, .form-body { padding: 24px 20px; }
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    .submit-area { flex-direction: column; align-items: stretch; }
+    .btn-submit { text-align: center; }
+  }
+</style>
+</head>
+<body>
+<div class="page-wrapper">
+
+  <div class="form-header">
+    <div class="org-name">Lapis Group · Human Resources</div>
+    <h1>Recruitment Requisition Form</h1>
+    <p>Complete all required fields and submit to HR for review and approval.</p>
+  </div>
+
+  <div class="form-body">
+
+    <div id="flash-success" class="flash success">
+      ✓ Your requisition has been submitted successfully. HR will be in touch shortly.
+    </div>
+    <div id="flash-error" class="flash error">
+      ✗ Something went wrong. Please try again or contact HR directly.
+    </div>
+
+    <form id="reqForm" novalidate>
+
+      <!-- SECTION 1: Position Details -->
+      <div class="section">
+        <div class="section-title"><span>1</span> Position Details</div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Job Title <span class="req">*</span></label>
+            <input type="text" name="job_title" required placeholder="e.g. Software Engineer">
+          </div>
+          <div class="field">
+            <label>Department / Project <span class="req">*</span></label>
+            <input type="text" name="department" required placeholder="e.g. Education Project">
+          </div>
+          <div class="field">
+            <label>Prime Contract</label>
+            <input type="text" name="prime_contract" placeholder="Contract reference if applicable">
+          </div>
+          <div class="field">
+            <label>Budgeted Salary</label>
+            <input type="text" name="budgeted_salary" placeholder="e.g. $1,200 / month">
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2: Employment Type -->
+      <div class="section">
+        <div class="section-title"><span>2</span> Employment Type</div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Employment Type <span class="req">*</span></label>
+            <div class="radio-group">
+              <label><input type="radio" name="employment_type" value="Full-Time" required><span>Full-Time</span></label>
+              <label><input type="radio" name="employment_type" value="Part-Time"><span>Part-Time</span></label>
+              <label><input type="radio" name="employment_type" value="Contract"><span>Contract</span></label>
+              <label><input type="radio" name="employment_type" value="Consultancy"><span>Consultancy</span></label>
+            </div>
+          </div>
+          <div class="field" id="contract-dates-field">
+            <label>Contract Duration (Start – End Date)</label>
+            <div class="grid-2" style="margin-top:0;">
+              <input type="date" name="contract_start" placeholder="Start date">
+              <input type="date" name="contract_end" placeholder="End date">
+            </div>
+            <span class="hint">Required if contract or consultancy.</span>
+          </div>
+        </div>
+        <div class="grid-2" style="margin-top:16px;">
+          <div class="field">
+            <label>Expected Start Date <span class="req">*</span></label>
+            <input type="date" name="start_date" required>
+          </div>
+          <div class="field">
+            <label>Number of Positions</label>
+            <input type="number" name="num_positions" min="1" value="1" placeholder="1">
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3: Justification -->
+      <div class="section">
+        <div class="section-title"><span>3</span> Justification for Recruitment</div>
+        <div class="field">
+          <label>Why is this position needed? <span class="req">*</span></label>
+          <textarea name="justification" class="tall" required placeholder="Explain the business need, workload, or project demand that requires this hire..."></textarea>
+        </div>
+        <div class="field" style="margin-top:16px;">
+          <label>Replacement or New Position?</label>
+          <div class="radio-group">
+            <label><input type="radio" name="position_type" value="New Position"><span>New Position</span></label>
+            <label><input type="radio" name="position_type" value="Replacement"><span>Replacement</span></label>
+            <label><input type="radio" name="position_type" value="Expansion"><span>Team Expansion</span></label>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4: Job Profile -->
+      <div class="section">
+        <div class="section-title"><span>4</span> Job Profile</div>
+        <div class="field">
+          <label>Role Summary <span class="req">*</span></label>
+          <textarea name="role_summary" class="tall" required placeholder="Brief description of the role and its primary responsibilities..."></textarea>
+        </div>
+        <div class="field" style="margin-top:16px;">
+          <label>Key Responsibilities</label>
+          <textarea name="responsibilities" class="tall" placeholder="List the main duties and deliverables..."></textarea>
+        </div>
+        <div class="field" style="margin-top:16px;">
+          <label>Required Qualifications &amp; Skills</label>
+          <textarea name="qualifications" placeholder="Education, years of experience, technical skills, languages..."></textarea>
+        </div>
+        <div class="field" style="margin-top:16px;">
+          <label>Preferred / Nice-to-have</label>
+          <textarea name="preferred_skills" placeholder="Additional skills or experience that are an advantage..."></textarea>
+        </div>
+      </div>
+
+      <!-- SECTION 5: Requested By -->
+      <div class="section">
+        <div class="section-title"><span>5</span> Requested By (Line Manager)</div>
+        <div class="grid-2">
+          <div class="field">
+            <label>Full Name <span class="req">*</span></label>
+            <input type="text" name="manager_name" required placeholder="Line Manager's name">
+          </div>
+          <div class="field">
+            <label>Email Address <span class="req">*</span></label>
+            <input type="email" name="manager_email" required placeholder="manager@lapis-group.com">
+          </div>
+          <div class="field">
+            <label>Date <span class="req">*</span></label>
+            <input type="date" name="request_date" required>
+          </div>
+          <div class="field">
+            <label>Signature (Type full name as signature)</label>
+            <input type="text" name="manager_signature" placeholder="Type your full name">
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 6: Additional Notes -->
+      <div class="section">
+        <div class="section-title"><span>6</span> Additional Notes</div>
+        <div class="field">
+          <label>Any other information for HR?</label>
+          <textarea name="notes" placeholder="Urgency, specific sourcing channels, interview panel preferences, etc."></textarea>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-area">
+        <p class="submit-note">
+          By submitting, this form will be sent to <strong>HR</strong> for review. 
+        </p>
+        <button type="submit" class="btn-submit" id="submitBtn">Submit to HR →</button>
+      </div>
+
+    </form>
+  </div>
+</div>
+
+<script>
+  // Pre-fill today's date
+  const today = new Date().toISOString().split('T')[0];
+  document.querySelector('[name="request_date"]').value = today;
+
+  // Form submit
+  document.getElementById('reqForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('submitBtn');
+    const successFlash = document.getElementById('flash-success');
+    const errorFlash = document.getElementById('flash-error');
+    successFlash.classList.remove('show');
+    errorFlash.classList.remove('show');
+
+    // Basic validation
+    const required = this.querySelectorAll('[required]');
+    let valid = true;
+    required.forEach(el => {
+      if (el.type === 'radio') return; // handled separately
+      if (!el.value.trim()) {
+        el.style.borderColor = '#c0392b';
+        valid = false;
+      } else {
+        el.style.borderColor = '';
+      }
+    });
+    // Check radio groups
+    const empType = this.querySelector('[name="employment_type"]:checked');
+    if (!empType) {
+      valid = false;
+      document.querySelector('.radio-group').style.outline = '2px solid #c0392b';
+    }
+    if (!valid) {
+      errorFlash.textContent = '✗ Please fill in all required fields marked with *.';
+      errorFlash.classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+      return;
+    }
+
+    // Build FormData
+    const data = new FormData(this);
+
+    btn.disabled = true;
+    btn.innerHTML = '<span class="spinner"></span> Sending...';
+
+    try {
+      const res = await fetch('send_requisition.php', {
+        method: 'POST',
+        body: data
+      });
+      const json = await res.json();
+      if (json.success) {
+        successFlash.classList.add('show');
+        this.reset();
+        document.querySelector('[name="request_date"]').value = today;
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        throw new Error(json.message || 'Unknown error');
+      }
+    } catch (err) {
+      errorFlash.textContent = '✗ ' + (err.message || 'Submission failed. Please try again.');
+      errorFlash.classList.add('show');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    } finally {
+      btn.disabled = false;
+      btn.innerHTML = 'Submit to HR →';
+    }
+  });
+
+  // Clear red borders on input
+  document.querySelectorAll('input, textarea, select').forEach(el => {
+    el.addEventListener('input', () => { el.style.borderColor = ''; });
+  });
+</script>
+<div style="text-align:center;padding:20px;font-size:11px;color:#7a9ab8;">
+  Developed by <a href="https://linkedin.com/in/shams-haqyar-373020136/" target="_blank" style="color:#0077cc;text-decoration:none;font-weight:500;">Shams Haqyar</a> &nbsp;&middot;&nbsp; &copy; 2026
+</div>
+</body>
+</html>
