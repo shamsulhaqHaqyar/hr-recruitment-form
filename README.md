@@ -205,5 +205,3 @@ yourdomain.com/hire/recruitment.html
 <p align="center">
   <img src="https://capsule-render.vercel.app/api?type=waving&color=gradient&customColorList=2,12,24&height=100&section=footer" alt="Footer"/>
 </p>
-
-<p align="center">Built for Lapis Group HR Operations</p>
