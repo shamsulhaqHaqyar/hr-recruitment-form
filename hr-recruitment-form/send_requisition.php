@@ -4,11 +4,11 @@ header('Content-Type: application/json');
 define('SMTP_HOST',            'smtp.gmail.com');
 define('SMTP_PORT',            587);
 define('SMTP_SECURE',          'tls');
-define('SMTP_USER',            'example6@gmail.com');
-define('SMTP_PASS',            'xxxx xxxx xxxx xxxx');
-define('FROM_EMAIL',           'example6@gmail.com');
+define('SMTP_USER',            'your_gmail@gmail.com');
+define('SMTP_PASS',            'your_app_password');
+define('FROM_EMAIL',           'your_gmail@gmail.com');
 define('FROM_NAME',            'Lapis Group HR System');
-define('HR_EMAIL',             'example@gmail.com');
+define('HR_EMAIL',              'hr@yourdomain.com');
 define('HR_NAME',              'HR Department');
 define('SEND_COPY_TO_MANAGER', true);
 
@@ -39,12 +39,13 @@ $f = [
     'preferred_skills'  => clean('preferred_skills'),
     'manager_name'      => clean('manager_name'),
     'manager_email'     => clean('manager_email'),
+    'requester_email'   => clean('requester_email'),
     'manager_signature' => clean('manager_signature'),
     'request_date'      => clean('request_date'),
     'notes'             => clean('notes'),
 ];
 
-$required = ['job_title','department','employment_type','start_date','justification','role_summary','manager_name','manager_email','request_date'];
+$required = ['job_title','department','employment_type','start_date','justification','role_summary','manager_name','manager_email','requester_email','request_date'];
 foreach ($required as $key) {
     if (empty($f[$key])) {
         echo json_encode(['success' => false, 'message' => "Missing required field: $key"]);
@@ -222,8 +223,12 @@ $html .= '<body style="font-family:Arial,sans-serif;background:#e8f0f8;margin:0;
 $html .= '<div style="max-width:640px;margin:0 auto;background:#fff;border:1px solid #c5d5e8;">';
 $html .= '<div style="background:#0a1628;padding:24px 28px;">';
 $html .= '<p style="font-size:9px;letter-spacing:4px;color:#00aaff;margin:0 0 8px;font-weight:700;">LAPIS GROUP &middot; HUMAN RESOURCES</p>';
-$html .= '<h1 style="color:#e8f4ff;font-size:20px;margin:0 0 6px;">Recruitment Requisition</h1>';
-$html .= '<p style="color:rgba(200,230,255,0.6);font-size:11px;margin:0;">Submitted on ' . date('d F Y', strtotime($f['request_date'] ?: 'today')) . ' &nbsp;&bull;&nbsp; ' . $f['manager_name'] . '</p>';
+$html .= '<h1 style="color:#e8f4ff;font-size:20px;margin:0 0 6px;">Recruitment Requisition — Approval Needed</h1>';
+$html .= '<p style="color:rgba(200,230,255,0.6);font-size:11px;margin:0;">Submitted on ' . date('d F Y', strtotime($f['request_date'] ?: 'today')) . ' &nbsp;&bull;&nbsp; by ' . $f['manager_name'] . '</p>';
+$html .= '</div>';
+$html .= '<div style="background:#fff8e1;padding:14px 20px;border-left:4px solid #f0a500;margin:0;font-size:13px;color:#7a5800;">';
+$html .= '<strong>' . $f['manager_name'] . '</strong> has submitted a recruitment request for <strong>' . $f['job_title'] . '</strong> in <strong>' . $f['department'] . '</strong>.<br><br>';
+$html .= 'Please review the details below and <strong>reply to this email</strong> to approve or reject this request. HR is copied on this email.';
 $html .= '</div>';
 if ($pdf_string) {
     $html .= '<div style="background:#eef6ff;padding:11px 20px;border-bottom:1px solid #c5d5e8;font-size:12px;color:#0a5a8c;">&#128206; A formatted PDF of this requisition is attached.</div>';
@@ -302,16 +307,20 @@ try {
     $mail->CharSet    = 'UTF-8';
 
     $mail->setFrom(FROM_EMAIL, FROM_NAME);
-    $mail->addAddress(HR_EMAIL, HR_NAME);
+    // Send to Line Manager for approval
+    $mail->addAddress($f['manager_email'], $f['manager_name']);
 
-    if (SEND_COPY_TO_MANAGER && !empty($f['manager_email'])) {
-        $mail->addCC($f['manager_email'], $f['manager_name']);
-    }
-    if (!empty($f['manager_email'])) {
-        $mail->addReplyTo($f['manager_email'], $f['manager_name']);
-    }
+    // HR in CC
+    $mail->addCC(HR_EMAIL, HR_NAME);
 
-    $mail->Subject = 'Recruitment Requisition: ' . $f['job_title'] . ' - ' . $f['department'];
+    // Requester (person who filled the form) in CC
+    if (!empty($f['requester_email'])) {
+        $mail->addCC($f['requester_email'], 'Requester');
+    }
+    // Reply-To goes to HR
+    $mail->addReplyTo(HR_EMAIL, HR_NAME);
+
+    $mail->Subject = '[APPROVAL NEEDED] Recruitment Request: ' . $f['job_title'] . ' - ' . $f['department'];
     $mail->isHTML(true);
     $mail->Body    = $html;
     $mail->AltBody = $plain;
