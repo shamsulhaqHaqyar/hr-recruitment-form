@@ -420,12 +420,16 @@
       <div class="section">
         <div class="section-title"><span>5</span> Requested By (Line Manager)</div>
         <div class="grid-2">
+          <div class="field col-full">
+            <label>Your Email Address (Requester) <span class="req">*</span></label>
+            <input type="email" name="requester_email" required placeholder="your.email@lapis-group.com">
+          </div>
           <div class="field">
-            <label>Full Name <span class="req">*</span></label>
+            <label>Your Full Name <span class="req">*</span></label>
             <input type="text" name="manager_name" required placeholder="Line Manager's name">
           </div>
           <div class="field">
-            <label>Email Address <span class="req">*</span></label>
+            <label>Your Line Manager Email Address <span class="req">*</span></label>
             <input type="email" name="manager_email" required placeholder="manager@lapis-group.com">
           </div>
           <div class="field">
@@ -433,7 +437,7 @@
             <input type="date" name="request_date" required>
           </div>
           <div class="field">
-            <label>Signature (Type full name as signature)</label>
+            <label>Signature (Type your full name as signature)</label>
             <input type="text" name="manager_signature" placeholder="Type your full name">
           </div>
         </div>
