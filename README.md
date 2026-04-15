@@ -32,7 +32,8 @@ A lightweight web-based recruitment requisition form that replaces manual Word d
 │  ✓ Clean branded web form — no login required                   │
 │  ✓ Formatted HTML email sent to HR on submission                │
 │  ✓ Branded PDF generated and attached automatically             │
-│  ✓ CC copy sent to the requesting manager                       │
+│  ✓ Manager approval workflow — routes to line manager first     │
+│  ✓ Requester and HR copied on all emails                        │
 │  ✓ Server-side validation                                       │
 │  ✓ Works on any PHP shared hosting (Hostinger, cPanel, etc.)    │
 │  ✓ No database or framework required                            │
@@ -45,20 +46,19 @@ A lightweight web-based recruitment requisition form that replaces manual Word d
 ## 🔄 How It Works
 
 ```
-Manager opens form
-       ↓
-Fills in position details, employment type, justification, job profile
+Requester fills the form (enters their line manager's email)
        ↓
 Clicks Submit
        ↓
-PHP backend processes the form
-       ↓
-FPDF generates a branded PDF
+PHP backend processes the form + FPDF generates branded PDF
        ↓
 PHPMailer sends email via SMTP
        ↓
-HR receives formatted HTML email + PDF attachment
-Manager receives a CC copy
+Line Manager receives [APPROVAL NEEDED] email + PDF
+HR is in CC — requester is in CC
+       ↓
+Line Manager replies to approve or reject
+HR takes action based on reply
 ```
 
 ---
@@ -186,7 +186,7 @@ yourdomain.com/hire/recruitment.html
 - [x] CC copy to requesting manager
 - [x] Server-side validation
 - [x] Brand colors and typography
-- [ ] Approval workflow (HR approves/rejects → notifies manager)
+- [x] Manager approval workflow — submission routes to line manager first
 - [ ] Admin dashboard to view all submissions
 - [ ] Multi-language support (Dari/Pashto)
 - [ ] Email delivery to inbox (DKIM/SPF setup)
